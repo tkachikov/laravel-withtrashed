@@ -1,0 +1,20 @@
+{
+    "name": "tkachikov/laravel-withtrashed",
+    "description": "Trait for set magic method withTrashed for models with SoftDelete",
+    "keywords": ["laravel", "trait", "withTrashed", "SoftDelete"],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Tkachikov\\LaravelWithtrashed\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ткачиков Александр",
+            "email": "a.tkachikov@mail.ru"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    }
+}
