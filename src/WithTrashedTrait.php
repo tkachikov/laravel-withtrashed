@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Tkachikov\LaravelWithtrashed;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 trait WithTrashedTrait
 {
     public function __get($key)
@@ -69,6 +71,8 @@ trait WithTrashedTrait
     {
         $relationMethod = $this->getMethodWithoutWithTrashed($method);
 
-        return $this->$relationMethod(...$args)->withTrashed();
+        return isset(class_uses($this->$relationMethod()->getRelated())[SoftDeletes::class])
+            ? $this->$relationMethod(...$args)->withTrashed()
+            : $this->$relationMethod(...$args);
     }
 }
