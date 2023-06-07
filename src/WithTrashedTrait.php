@@ -27,12 +27,28 @@ trait WithTrashedTrait
     public function prepareCallWithTrashed(string $magic, string $method, array $args = []): mixed
     {
         return $this->isWithTrashed($method)
-            ? (function ($builder) use ($magic) {
-                return $magic === '__get'
-                    ? $builder->get()
-                    : $builder;
-            })($this->callWithTrashed($method, $args))
+            ? $this->callMagic($method, $args, $magic)
             : parent::$magic($method, $args);
+    }
+
+    /**
+     * @param string $method
+     * @param array  $args
+     * @param string $magic
+     *
+     * @return mixed
+     */
+    public function callMagic(string $method, array $args, string $magic): mixed
+    {
+        $builder = $this->callWithTrashed($method, $args);
+        $originalMethod = $this->getMethodWithoutWithTrashed($method);
+        $getMethod = str($originalMethod)->singular()->is($originalMethod)
+            ? 'first'
+            : 'get';
+
+        return $magic === '__get'
+            ? $builder->$getMethod()
+            : $builder;
     }
 
     /**
